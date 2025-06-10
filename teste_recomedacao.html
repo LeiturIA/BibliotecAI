@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BibliotecAI - Sistema de Gestão e Incentivo à Leitura</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1D8348', // Verde principal
+                        'primary-light': '#27AE60', // Verde mais claro
+                        'primary-dark': '#145A32', // Verde mais escuro
+                        'secondary': '#F2F3F4', // Cinza claro
+                        'secondary-dark': '#7F8C8D', // Cinza escuro
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #F9F9F9;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #1D8348 0%, #27AE60 100%);
+        }
+        .book-card {
+            transition: all 0.3s ease;
+        }
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .demo-section {
+            transition: all 0.3s ease;
+        }
+        .book-cover {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-end;
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="gradient-bg text-white p-4 shadow-lg">
+            <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-2 mb-4 md:mb-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                    <div>
+                        <h1 class="text-2xl font-bold">BibliotecAI</h1>
+                        <p class="text-xs md:text-sm">Sistema de Gestão e Incentivo à Leitura</p>
+                    </div>
+                </div>
+                <nav>
+                    <ul class="flex space-x-6">
+                        <li><a href="#" class="hover:text-green-200 transition">Início</a></li>
+                        <li><a href="#" class="hover:text-green-200 transition">Acervo</a></li>
+                        <li><a href="#" class="hover:text-green-200 transition">Recomendações</a></li>
+                        <li><a href="#" class="hover:text-green-200 transition">Minha Conta</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow container mx-auto p-4 md:p-6">
+            <!-- Hero Section -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+                <div class="md:flex">
+                    <div class="md:w-1/2 p-6 md:p-8 flex flex-col justify-center">
+                        <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Descubra Livros Perfeitos para Você</h2>
+                        <p class="text-gray-600 mb-6">O BibliotecAI utiliza inteligência artificial para recomendar livros que combinam com seu perfil, interesses acadêmicos e objetivos de aprendizagem.</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="bg-primary-light/20 text-primary-dark px-3 py-1 rounded-full text-sm">Ensino Médio</span>
+                            <span class="bg-primary-light/20 text-primary-dark px-3 py-1 rounded-full text-sm">Ensino Técnico</span>
+                            <span class="bg-primary-light/20 text-primary-dark px-3 py-1 rounded-full text-sm">EJA</span>
+                            <span class="bg-primary-light/20 text-primary-dark px-3 py-1 rounded-full text-sm">Personalizado</span>
+                        </div>
+                        <a href="#demo" class="gradient-bg text-white px-6 py-3 rounded-md hover:opacity-90 transition inline-block text-center w-full md:w-auto">Experimente Agora</a>
+                    </div>
+                    <div class="md:w-1/2 gradient-bg p-6 md:p-8 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-64 w-64 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- How It Works Section -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Como Funciona a Recomendação por IA</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="w-12 h-12 gradient-bg rounded-full flex items-center justify-center mb-4">
+                            <span class="text-white font-bold text-xl">1</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Perfil do Estudante</h3>
+                        <p class="text-gray-600">O sistema coleta informações sobre seu nível de ensino, interesses, disciplinas favoritas e objetivos de aprendizagem.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="w-12 h-12 gradient-bg rounded-full flex items-center justify-center mb-4">
+                            <span class="text-white font-bold text-xl">2</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Análise por IA</h3>
+                        <p class="text-gray-600">Nossa inteligência artificial analisa seu perfil e o compara com o acervo disponível, identificando padrões e conexões.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="w-12 h-12 gradient-bg rounded-full flex items-center justify-center mb-4">
+                            <span class="text-white font-bold text-xl">3</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Recomendações Personalizadas</h3>
+                        <p class="text-gray-600">Você recebe sugestões de livros alinhados ao seu currículo, interesses e que podem ajudar em seu desenvolvimento acadêmico.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Demo Section -->
+            <div id="demo" class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+                <div class="gradient-bg p-4 md:p-6">
+                    <h2 class="text-xl md:text-2xl font-bold text-white">Experimente o Sistema de Recomendação</h2>
+                    <p class="text-white/80">Veja na prática como a inteligência artificial recomenda livros para você</p>
+                </div>
+                <div class="p-6">
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Selecione seu perfil:</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <button id="profile-regular" class="demo-section p-4 border-2 border-gray-200 rounded-lg hover:border-primary transition">
+                                <h4 class="font-medium text-gray-800">Ensino Médio Regular</h4>
+                                <p class="text-sm text-gray-600">Estudantes do ensino médio tradicional</p>
+                            </button>
+                            <button id="profile-tech" class="demo-section p-4 border-2 border-gray-200 rounded-lg hover:border-primary transition">
+                                <h4 class="font-medium text-gray-800">Ensino Técnico</h4>
+                                <p class="text-sm text-gray-600">Estudantes de cursos técnicos integrados</p>
+                            </button>
+                            <button id="profile-eja" class="demo-section p-4 border-2 border-gray-200 rounded-lg hover:border-primary transition">
+                                <h4 class="font-medium text-gray-800">EJA</h4>
+                                <p class="text-sm text-gray-600">Educação de Jovens e Adultos</p>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Áreas de interesse:</h3>
+                        <div class="flex flex-wrap gap-3">
+                            <label class="interest-tag flex items-center space-x-2 p-2 border border-gray-200 rounded-md cursor-pointer hover:bg-primary-light/10 transition">
+                                <input type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                                <span class="text-sm">Matemática</span>
+                            </label>
+                            <label class="interest-tag flex items-center space-x-2 p-2 border border-gray-200 rounded-md cursor-pointer hover:bg-primary-light/10 transition">
+                                <input type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                                <span class="text-sm">Português</span>
+                            </label>
+                            <label class="interest-tag flex items-center space-x-2 p-2 border border-gray-200 rounded-md cursor-pointer hover:bg-primary-light/10 transition">
+                                <input type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                                <span class="text-sm">História</span>
+                            </label>
+                            <label class="interest-tag flex items-center space-x-2 p-2 border border-gray-200 rounded-md cursor-pointer hover:bg-primary-light/10 transition">
+                                <input type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                                <span class="text-sm">Geografia</span>
+                            </label>
+                            <label class="interest-tag flex items-center space-x-2 p-2 border border-gray-200 rounded-md cursor-pointer hover:bg-primary-light/10 transition">
+                                <input type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                                <span class="text-sm">Biologia</span>
+                            </label>
+                            <label class="interest-tag flex items-center space-x-2 p-2 border border-gray-200 rounded-md cursor-pointer hover:bg-primary-light/10 transition">
+                                <input type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                                <span class="text-sm">Física</span>
+                            </label>
+                            <label class="interest-tag flex items-center space-x-2 p-2 border border-gray-200 rounded-md cursor-pointer hover:bg-primary-light/10 transition">
+                                <input type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                                <span class="text-sm">Química</span>
+                            </label>
+                            <label class="interest-tag flex items-center space-x-2 p-2 border border-gray-200 rounded-md cursor-pointer hover:bg-primary-light/10 transition">
+                                <input type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                                <span class="text-sm">Literatura</span>
+                            </label>
+                            <label class="interest-tag flex items-center space-x-2 p-2 border border-gray-200 rounded-md cursor-pointer hover:bg-primary-light/10 transition">
+                                <input type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                                <span class="text-sm">Informática</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Objetivos de aprendizagem:</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <label class="flex items-center space-x-2 p-3 border border-gray-200 rounded-md cursor-pointer hover:bg-primary-light/10 transition">
+                                <input type="radio" name="goal" value="enem" class="h-4 w-4 text-primary focus:ring-primary border-gray-300">
+                                <span>Preparação para o ENEM</span>
+                            </label>
+                            <label class="flex items-center space-x-2 p-3 border border-gray-200 rounded-md cursor-pointer hover:bg-primary-light/10 transition">
+                                <input type="radio" name="goal" value="vestibular" class="h-4 w-4 text-primary focus:ring-primary border-gray-300">
+                                <span>Preparação para vestibulares</span>
+                            </label>
+                            <label class="flex items-center space-x-2 p-3 border border-gray-200 rounded-md cursor-pointer hover:bg-primary-light/10 transition">
+                                <input type="radio" name="goal" value="mercado" class="h-4 w-4 text-primary focus:ring-primary border-gray-300">
+                                <span>Preparação para o mercado de trabalho</span>
+                            </label>
+                            <label class="flex items-center space-x-2 p-3 border border-gray-200 rounded-md cursor-pointer hover:bg-primary-light/10 transition">
+                                <input type="radio" name="goal" value="conhecimento" class="h-4 w-4 text-primary focus:ring-primary border-gray-300">
+                                <span>Ampliação de conhecimentos gerais</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button id="generate-recommendations" class="gradient-bg text-white px-6 py-3 rounded-md hover:opacity-90 transition">
+                            Gerar Recomendações
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section (initially hidden) -->
+            <div id="results-section" class="hidden">
+                <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+                    <div class="gradient-bg p-4 md:p-6">
+                        <h2 class="text-xl md:text-2xl font-bold text-white">Suas Recomendações Personalizadas</h2>
+                        <p class="text-white/80">Baseadas no seu perfil e interesses acadêmicos</p>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div id="ai-explanation" class="mb-8 p-4 bg-primary-light/10 rounded-lg border border-primary-light/30">
+                            <h3 class="text-lg font-semibold text-primary-dark mb-2">Como a IA selecionou estes livros para você</h3>
+                            <p class="text-gray-700" id="ai-reasoning"></p>
+                        </div>
+
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Livros Recomendados:</h3>
+                        
+                        <div id="recommendations-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Book recommendations will be inserted here by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mb-8">
+                    <button id="try-again" class="bg-secondary-dark text-white px-6 py-3 rounded-md hover:opacity-90 transition">
+                        Tentar com Outro Perfil
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white py-6">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <div class="flex items-center space-x-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                            <div>
+                                <span class="font-bold">BibliotecAI</span>
+                                <p class="text-xs text-gray-400">Sistema de Gestão e Incentivo à Leitura</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="#" class="hover:text-green-300 transition">Termos de Uso</a>
+                        <a href="#" class="hover:text-green-300 transition">Privacidade</a>
+                        <a href="#" class="hover:text-green-300 transition">Contato</a>
+                    </div>
+                </div>
+                <div class="mt-6 text-center text-sm text-gray-400">
+                    <p>&copy; 2023 BibliotecAI - Secretaria de Educação do Estado do Piauí. Todos os direitos reservados.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements
+            const profileButtons = document.querySelectorAll('.demo-section');
+            const interestTags = document.querySelectorAll('.interest-tag input');
+            const generateBtn = document.getElementById('generate-recommendations');
+            const resultsSection = document.getElementById('results-section');
+            const demoSection = document.getElementById('demo');
+            const tryAgainBtn = document.getElementById('try-again');
+            const aiReasoning = document.getElementById('ai-reasoning');
+            
+            // Selected profile tracking
+            let selectedProfile = null;
+            
+            // Profile selection
+            profileButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Reset all buttons
+                    profileButtons.forEach(btn => {
+                        btn.classList.remove('border-primary', 'bg-primary-light/10');
+                        btn.classList.add('border-gray-200');
+                    });
+                    
+                    // Highlight selected button
+                    this.classList.remove('border-gray-200');
+                    this.classList.add('border-primary', 'bg-primary-light/10');
+                    
+                    // Store selected profile
+                    selectedProfile = this.id;
+                });
+            });
+            
+            // Generate recommendations
+            generateBtn.addEventListener('click', function() {
+                // Check if profile is selected
+                if (!selectedProfile) {
+                    alert('Por favor, selecione um perfil de estudante.');
+                    return;
+                }
+                
+                // Get selected interests
+                const selectedInterests = [];
+                interestTags.forEach(tag => {
+                    if (tag.checked) {
+                        selectedInterests.push(tag.nextElementSibling.textContent.trim());
+                    }
+                });
+                
+                // Check if at least one interest is selected
+                if (selectedInterests.length === 0) {
+                    alert('Por favor, selecione pelo menos uma área de interesse.');
+                    return;
+                }
+                
+                // Get selected goal
+                const selectedGoal = document.querySelector('input[name="goal"]:checked');
+                if (!selectedGoal) {
+                    alert('Por favor, selecione um objetivo de aprendizagem.');
+                    return;
+                }
+                
+                // Generate recommendations
+                generateRecommendations(selectedProfile, selectedInterests, selectedGoal.value);
+                
+                // Show results section
+                demoSection.classList.add('hidden');
+                resultsSection.classList.remove('hidden');
+                
+                // Scroll to results
+                resultsSection.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Try again button
+            tryAgainBtn.addEventListener('click', function() {
+                // Reset selections
+                profileButtons.forEach(btn => {
+                    btn.classList.remove('border-primary', 'bg-primary-light/10');
+                    btn.classList.add('border-gray-200');
+                });
+                
+                interestTags.forEach(tag => {
+                    tag.checked = false;
+                });
+                
+                const goals = document.querySelectorAll('input[name="goal"]');
+                goals.forEach(goal => {
+                    goal.checked = false;
+                });
+                
+                selectedProfile = null;
+                
+                // Show demo section
+                resultsSection.classList.add('hidden');
+                demoSection.classList.remove('hidden');
+                
+                // Scroll to demo
+                demoSection.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Generate book recommendations based on user profile
+            function generateRecommendations(profile, interests, goal) {
+                // Book database with SVG covers
+                const bookDatabase = {
+                    regular: [
+                        {
+                            title: "Vidas Secas",
+                            author: "Graciliano Ramos",
+                            description: "Um clássico da literatura brasileira que retrata a dura realidade do sertão nordestino e a luta pela sobrevivência.",
+                            subjects: ["Literatura", "Português", "História"],
+                            coverColor: "#D4AC0D",
+                            coverSvg: `<svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="100" height="140" fill="#D4AC0D"/>
+                                <circle cx="50" cy="45" r="20" fill="#F7DC6F" opacity="0.7"/>
+                                <rect x="20" y="80" width="60" height="2" fill="#F7DC6F"/>
+                                <rect x="20" y="90" width="40" height="2" fill="#F7DC6F"/>
+                                <rect x="20" y="100" width="50" height="2" fill="#F7DC6F"/>
+                            </svg>`,
+                            relevance: 95,
+                            difficulty: "Médio",
+                            curriculum: "Literatura Brasileira, Modernismo"
+                        },
+                        {
+                            title: "Matemática Contextualizada",
+                            author: "José Roberto Bonjorno",
+                            description: "Abordagem prática da matemática com aplicações no cotidiano e exercícios preparatórios para o ENEM.",
+                            subjects: ["Matemática"],
+                            coverColor: "#2471A3",
+                            coverSvg: `<svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="100" height="140" fill="#2471A3"/>
+                                <circle cx="30" cy="40" r="15" fill="#AED6F1" opacity="0.7"/>
+                                <rect x="55" y="30" width="25" height="2" fill="#AED6F1"/>
+                                <rect x="55" y="40" width="25" height="2" fill="#AED6F1"/>
+                                <rect x="55" y="50" width="15" height="2" fill="#AED6F1"/>
+                                <text x="30" y="90" font-family="Arial" font-size="24" fill="#AED6F1" text-anchor="middle">π</text>
+                                <text x="70" y="90" font-family="Arial" font-size="24" fill="#AED6F1" text-anchor="middle">∑</text>
+                            </svg>`,
+                            relevance: 90,
+                            difficulty: "Médio",
+                            curriculum: "Matemática do Ensino Médio, ENEM"
+                        },
+                        {
+                            title: "Química Geral",
+                            author: "João Usberco e Edgard Salvador",
+                            description: "Fundamentos da química com exemplos práticos e exercícios resolvidos para fixação do conteúdo.",
+                            subjects: ["Química"],
+                            coverColor: "#117A65",
+                            coverSvg: `<svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="100" height="140" fill="#117A65"/>
+                                <circle cx="50" cy="40" r="20" fill="#A3E4D7" opacity="0.5"/>
+                                <path d="M30,80 L50,60 L70,80" stroke="#A3E4D7" stroke-width="2" fill="none"/>
+                                <circle cx="30" cy="80" r="5" fill="#A3E4D7"/>
+                                <circle cx="50" cy="60" r="5" fill="#A3E4D7"/>
+                                <circle cx="70" cy="80" r="5" fill="#A3E4D7"/>
+                            </svg>`,
+                            relevance: 85,
+                            difficulty: "Médio-Difícil",
+                            curriculum: "Química do Ensino Médio"
+                        }
+                    ],
+                    tech: [
+                        {
+                            title: "Fundamentos de Lógica de Programação",
+                            author: "Ana Fernandes",
+                            description: "Introdução aos conceitos fundamentais de lógica e algoritmos para iniciantes em programação.",
+                            subjects: ["Informática", "Matemática"],
+                            coverColor: "#5B2C6F",
+                            coverSvg: `<svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="100" height="140" fill="#5B2C6F"/>
+                                <rect x="20" y="30" width="60" height="40" fill="#D2B4DE" opacity="0.7"/>
+                                <text x="50" y="55" font-family="monospace" font-size="10" fill="#ffffff" text-anchor="middle">{code}</text>
+                                <rect x="25" y="80" width="50" height="2" fill="#D2B4DE"/>
+                                <rect x="25" y="90" width="40" height="2" fill="#D2B4DE"/>
+                                <rect x="25" y="100" width="30" height="2" fill="#D2B4DE"/>
+                            </svg>`,
+                            relevance: 98,
+                            difficulty: "Iniciante",
+                            curriculum: "Informática Básica, Lógica de Programação"
+                        },
+                        {
+                            title: "Redes de Computadores",
+                            author: "Carlos Eduardo",
+                            description: "Conceitos e práticas essenciais sobre redes de computadores, protocolos e segurança da informação.",
+                            subjects: ["Informática"],
+                            coverColor: "#1A5276",
+                            coverSvg: `<svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="100" height="140" fill="#1A5276"/>
+                                <circle cx="30" cy="40" r="10" fill="#85C1E9" opacity="0.8"/>
+                                <circle cx="70" cy="40" r="10" fill="#85C1E9" opacity="0.8"/>
+                                <circle cx="30" cy="90" r="10" fill="#85C1E9" opacity="0.8"/>
+                                <circle cx="70" cy="90" r="10" fill="#85C1E9" opacity="0.8"/>
+                                <line x1="30" y1="40" x2="70" y2="40" stroke="#85C1E9" stroke-width="2"/>
+                                <line x1="30" y1="40" x2="30" y2="90" stroke="#85C1E9" stroke-width="2"/>
+                                <line x1="30" y1="90" x2="70" y2="90" stroke="#85C1E9" stroke-width="2"/>
+                                <line x1="70" y1="40" x2="70" y2="90" stroke="#85C1E9" stroke-width="2"/>
+                            </svg>`,
+                            relevance: 90,
+                            difficulty: "Médio",
+                            curriculum: "Redes, Segurança da Informação"
+                        },
+                        {
+                            title: "Eletricidade Básica",
+                            author: "Roberto Silva",
+                            description: "Manual prático sobre os fundamentos da eletricidade, circuitos e medições elétricas.",
+                            subjects: ["Física"],
+                            coverColor: "#B03A2E",
+                            coverSvg: `<svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="100" height="140" fill="#B03A2E"/>
+                                <path d="M30,40 L45,70 L55,30 L70,60" stroke="#F5B7B1" stroke-width="3" fill="none"/>
+                                <circle cx="50" cy="90" r="15" fill="#F5B7B1" opacity="0.5"/>
+                                <path d="M45,90 L55,90" stroke="#F5B7B1" stroke-width="2"/>
+                                <path d="M50,85 L50,95" stroke="#F5B7B1" stroke-width="2"/>
+                            </svg>`,
+                            relevance: 85,
+                            difficulty: "Médio",
+                            curriculum: "Eletricidade, Física Aplicada"
+                        }
+                    ],
+                    eja: [
+                        {
+                            title: "Português Prático",
+                            author: "Maria Fernanda Costa",
+                            description: "Gramática e interpretação de texto com linguagem acessível e exemplos do cotidiano.",
+                            subjects: ["Português"],
+                            coverColor: "#196F3D",
+                            coverSvg: `<svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="100" height="140" fill="#196F3D"/>
+                                <rect x="20" y="30" width="60" height="60" fill="#A9DFBF" opacity="0.6"/>
+                                <line x1="25" y1="40" x2="75" y2="40" stroke="#A9DFBF" stroke-width="2"/>
+                                <line x1="25" y1="50" x2="75" y2="50" stroke="#A9DFBF" stroke-width="2"/>
+                                <line x1="25" y1="60" x2="65" y2="60" stroke="#A9DFBF" stroke-width="2"/>
+                                <line x1="25" y1="70" x2="70" y2="70" stroke="#A9DFBF" stroke-width="2"/>
+                                <line x1="25" y1="80" x2="55" y2="80" stroke="#A9DFBF" stroke-width="2"/>
+                            </svg>`,
+                            relevance: 95,
+                            difficulty: "Iniciante",
+                            curriculum: "Língua Portuguesa Básica"
+                        },
+                        {
+                            title: "Matemática do Dia a Dia",
+                            author: "Paulo Mendes",
+                            description: "Conceitos matemáticos aplicados a situações cotidianas como orçamento familiar e compras.",
+                            subjects: ["Matemática"],
+                            coverColor: "#1F618D",
+                            coverSvg: `<svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="100" height="140" fill="#1F618D"/>
+                                <rect x="25" y="30" width="20" height="40" fill="#AED6F1" opacity="0.7"/>
+                                <rect x="55" y="30" width="20" height="60" fill="#AED6F1" opacity="0.7"/>
+                                <rect x="20" y="100" width="60" height="2" fill="#AED6F1"/>
+                                <text x="35" y="85" font-family="Arial" font-size="12" fill="#AED6F1" text-anchor="middle">+</text>
+                                <text x="65" y="85" font-family="Arial" font-size="12" fill="#AED6F1" text-anchor="middle">-</text>
+                                <text x="50" y="115" font-family="Arial" font-size="12" fill="#AED6F1" text-anchor="middle">÷ ×</text>
+                            </svg>`,
+                            relevance: 90,
+                            difficulty: "Iniciante",
+                            curriculum: "Matemática Básica, Educação Financeira"
+                        },
+                        {
+                            title: "História do Brasil Contemporâneo",
+                            author: "Antônio Carlos",
+                            description: "Panorama da história recente do Brasil com foco nos principais acontecimentos políticos e sociais.",
+                            subjects: ["História"],
+                            coverColor: "#7D6608",
+                            coverSvg: `<svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="100" height="140" fill="#7D6608"/>
+                                <rect x="20" y="20" width="60" height="80" fill="#F9E79F" opacity="0.5"/>
+                                <path d="M50,30 L50,90" stroke="#F9E79F" stroke-width="1" stroke-dasharray="2,2"/>
+                                <circle cx="35" cy="50" r="8" fill="#F9E79F" opacity="0.8"/>
+                                <circle cx="65" cy="70" r="8" fill="#F9E79F" opacity="0.8"/>
+                                <text x="50" y="110" font-family="Arial" font-size="10" fill="#F9E79F" text-anchor="middle">1889 - 2023</text>
+                            </svg>`,
+                            relevance: 85,
+                            difficulty: "Médio",
+                            curriculum: "História do Brasil"
+                        }
+                    ]
+                };
+                
+                // Map profile ID to profile name
+                const profileMap = {
+                    'profile-regular': 'regular',
+                    'profile-tech': 'tech',
+                    'profile-eja': 'eja'
+                };
+                
+                // Map goal to readable text
+                const goalMap = {
+                    'enem': 'preparação para o ENEM',
+                    'vestibular': 'preparação para vestibulares',
+                    'mercado': 'preparação para o mercado de trabalho',
+                    'conhecimento': 'ampliação de conhecimentos gerais'
+                };
+                
+                // Get profile type
+                const profileType = profileMap[profile];
+                
+                // Filter books based on interests
+                let recommendedBooks = bookDatabase[profileType].filter(book => {
+                    return book.subjects.some(subject => interests.includes(subject));
+                });
+                
+                // If no books match interests, use all books from the profile
+                if (recommendedBooks.length === 0) {
+                    recommendedBooks = bookDatabase[profileType];
+                }
+                
+                // Sort by relevance
+                recommendedBooks.sort((a, b) => b.relevance - a.relevance);
+                
+                // Generate AI reasoning
+                const profileName = profileType === 'regular' ? 'Ensino Médio Regular' : 
+                                    profileType === 'tech' ? 'Ensino Técnico' : 'EJA';
+                
+                const aiReasoningText = `
+                    Com base no seu perfil de estudante de <strong>${profileName}</strong> e seus interesses em 
+                    <strong>${interests.join(', ')}</strong>, com foco em <strong>${goalMap[goal]}</strong>, 
+                    nossa inteligência artificial analisou o acervo disponível e identificou livros que:
+                    <ul class="list-disc pl-5 mt-2">
+                        <li>Estão alinhados com o currículo do seu nível de ensino</li>
+                        <li>Abordam as disciplinas de seu interesse</li>
+                        <li>Têm nível de dificuldade adequado ao seu perfil</li>
+                        <li>Contribuem para seu objetivo de ${goalMap[goal]}</li>
+                    </ul>
+                    A IA também considerou padrões de leitura de estudantes com perfil semelhante ao seu que obtiveram bons resultados acadêmicos.
+                `;
+                
+                aiReasoning.innerHTML = aiReasoningText;
+                
+                // Display recommendations
+                const recommendationsContainer = document.getElementById('recommendations-container');
+                recommendationsContainer.innerHTML = '';
+                
+                recommendedBooks.forEach(book => {
+                    const bookCard = document.createElement('div');
+                    bookCard.className = 'book-card bg-white rounded-lg shadow-md overflow-hidden border border-gray-200';
+                    
+                    bookCard.innerHTML = `
+                        <div class="book-cover" style="background-color: ${book.coverColor}">
+                            ${book.coverSvg}
+                        </div>
+                        <div class="p-4">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-1">${book.title}</h4>
+                            <p class="text-sm text-gray-600 mb-2">por ${book.author}</p>
+                            <div class="flex items-center mb-3">
+                                <div class="flex text-yellow-400">
+                                    ${generateStarRating(book.relevance / 20)}
+                                </div>
+                                <span class="text-xs text-gray-500 ml-1">(${Math.floor(Math.random() * 50) + 10} avaliações)</span>
+                            </div>
+                            <p class="text-sm text-gray-700 mb-3">${book.description}</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                ${book.subjects.map(subject => `<span class="text-xs bg-primary-light/20 text-primary-dark px-2 py-1 rounded">${subject}</span>`).join('')}
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs font-medium text-gray-500">Dificuldade: ${book.difficulty}</span>
+                                <button class="text-sm bg-primary text-white px-3 py-1 rounded hover:bg-primary-dark transition">Detalhes</button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    recommendationsContainer.appendChild(bookCard);
+                });
+            }
+
+            // Generate star rating HTML
+            function generateStarRating(rating) {
+                let stars = '';
+                for (let i = 1; i <= 5; i++) {
+                    if (i <= rating) {
+                        stars += '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>';
+                    } else {
+                        stars += '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>';
+                    }
+                }
+                return stars;
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'94725c27870d1acf',t:'MTc0ODQ4MzYyNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
