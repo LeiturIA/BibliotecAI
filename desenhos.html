@@ -148,7 +148,7 @@
 
     <div class="flex flex-1">
         <!-- Sidebar -->
-        <aside class="sidebar fixed h-full w-64 text-white flex flex-col z-10">
+        <aside class="sidebar fixed h-full bg-green-700 text-white flex flex-col z-10">
             <div class="p-5 flex items-center justify-center border-b border-green-700">
                 <svg class="w-8 h-8 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
@@ -157,7 +157,7 @@
             </div>
             
             <nav class="flex-1 overflow-y-auto py-4">
-                <a href="#" class="sidebar-item flex items-center px-6 py-3 text-white">
+                <a href="teste1.html" class="sidebar-item flex items-center px-6 py-3 text-white">
                     <svg class="w-6 h-6 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
@@ -171,7 +171,7 @@
                     <span class="sidebar-text">Minha Trilha</span>
                 </a>
                 
-                <a href="#" class="sidebar-item flex items-center px-6 py-3 text-white">
+                <a href="teste_recomedacao.html" class="sidebar-item flex items-center px-6 py-3 text-white">
                     <svg class="w-6 h-6 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                     </svg>
@@ -198,6 +198,12 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
                     <span class="sidebar-text">Gestão</span>
+                </a>
+                <a href="#" id="sidebarLogout" class="sidebar-item flex items-center px-6 py-3 text-white">
+                    <svg class="w-6 h-6 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1m0-10v1" />
+                    </svg>
+                    Sair
                 </a>
             </nav>
             
@@ -871,6 +877,13 @@
                 alert('Olá! Sou o assistente da BibliotecAI. Experimente usar as novas ferramentas de desenho! Você pode criar círculos, retângulos, linhas e até adicionar texto. Que tal desenhar uma cena da floresta misteriosa do seu livro atual?');
             });
         });
+    </script>
+    <script>
+            document.getElementById('sidebarLogout').addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('usuarioLogado');
+                window.location.href = 'login2.html';
+            });
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'94a3afbf00301af4',t:'MTc0OTAwMDg1Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
