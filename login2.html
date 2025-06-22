@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BibliotecAI - Login e Cadastro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            200: '#a7f3d0',
+                            300: '#6ee7b7',
+                            400: '#34d399',
+                            500: '#10b981',
+                            600: '#047857',
+                            700: '#065f46',
+                            800: '#064e3b',
+                            900: '#022c22',
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px 0 rgba(0, 0, 0, 0.05)',
+                        'card': '0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * {
+            font-family: 'Nunito', sans-serif;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            min-height: 100vh;
+        }
+
+        .auth-container {
+            position: relative;
+            z-index: 10;
+        }
+
+        .auth-card {
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .profile-option {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .profile-option.active {
+            background-color: #047857;
+            color: white;
+        }
+
+        .profile-option:not(.active):hover {
+            background-color: #f3f4f6;
+        }
+
+        .input-field {
+            transition: all 0.2s ease;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+        }
+
+        .input-field:focus {
+            border-color: #047857;
+            box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.1);
+            outline: none;
+        }
+
+        .primary-btn {
+            background-color: #047857;
+            color: white;
+            transition: all 0.2s ease;
+        }
+
+        .primary-btn:hover {
+            background-color: #065f46;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .secondary-btn {
+            background-color: #f3f4f6;
+            color: #374151;
+            transition: all 0.2s ease;
+        }
+
+        .secondary-btn:hover {
+            background-color: #e5e7eb;
+            transform: translateY(-1px);
+        }
+
+        .link-text {
+            color: #047857;
+            transition: all 0.2s ease;
+        }
+
+        .link-text:hover {
+            color: #065f46;
+            text-decoration: underline;
+        }
+
+        .background-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+        }
+
+        @media (max-width: 640px) {
+            .auth-card {
+                border-radius: 12px;
+                margin: 0 16px;
+            }
+        }
+
+        /* Accessibility focus styles */
+        button:focus, a:focus, input:focus {
+            outline: 2px solid #047857;
+            outline-offset: 2px;
+        }
+
+        /* Animation for background elements */
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-delay-1 {
+            animation-delay: 1s;
+        }
+
+        .floating-delay-2 {
+            animation-delay: 2s;
+        }
+
+        .floating-delay-3 {
+            animation-delay: 3s;
+        }
+
+        /* Dashboard styles */
+        .dashboard-container {
+            display: none;
+        }
+
+        .sidebar {
+            background-color: #047857;
+            transition: all 0.3s ease;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .sidebar-item {
+            transition: all 0.2s ease;
+            border-radius: 8px;
+        }
+
+        .sidebar-item:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .sidebar-item.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .card {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+            background-color: #e2e8f0;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            border-radius: 4px;
+            background-color: #047857;
+        }
+
+        /* Form transition animations */
+        .slide-in {
+            animation: slideIn 0.3s forwards;
+        }
+
+        .slide-out {
+            animation: slideOut 0.3s forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Shapes and Illustrations -->
+    <div class="background-shapes">
+        <!-- Books -->
+        <svg class="shape floating" style="top: 15%; left: 10%; width: 120px;" viewBox="0 0 100 100" fill="#047857">
+            <rect x="10" y="20" width="80" height="60" rx="2" />
+            <rect x="20" y="30" width="60" height="10" rx="1" fill="#ffffff" />
+            <rect x="20" y="45" width="60" height="5" rx="1" fill="#ffffff" />
+            <rect x="20" y="55" width="40" height="5" rx="1" fill="#ffffff" />
+        </svg>
+        
+        <!-- Tablet -->
+        <svg class="shape floating floating-delay-2" style="top: 65%; left: 85%; width: 100px;" viewBox="0 0 100 100" fill="#047857">
+            <rect x="15" y="15" width="70" height="70" rx="5" />
+            <rect x="20" y="20" width="60" height="50" rx="2" fill="#ffffff" />
+            <circle cx="50" cy="80" r="5" fill="#ffffff" />
+        </svg>
+        
+        <!-- Cloud with AI symbol -->
+        <svg class="shape floating floating-delay-1" style="top: 25%; left: 80%; width: 150px;" viewBox="0 0 100 100" fill="#047857">
+            <path d="M25,60 Q10,60 10,50 Q10,40 25,40 Q25,20 50,20 Q75,20 75,40 Q90,40 90,50 Q90,60 75,60 Z" />
+            <text x="50" y="50" font-size="20" text-anchor="middle" fill="#ffffff">AI</text>
+        </svg>
+        
+        <!-- Student with book -->
+        <svg class="shape floating floating-delay-3" style="top: 70%; left: 15%; width: 120px;" viewBox="0 0 100 100" fill="#047857">
+            <circle cx="50" cy="30" r="20" /> <!-- Head -->
+            <rect x="40" y="50" width="20" height="30" /> <!-- Body -->
+            <rect x="30" y="60" width="40" height="10" /> <!-- Book -->
+        </svg>
+        
+        <!-- Brain with circuits -->
+        <svg class="shape floating" style="top: 10%; left: 70%; width: 100px;" viewBox="0 0 100 100" fill="#047857">
+            <path d="M30,30 Q50,10 70,30 Q90,50 70,70 Q50,90 30,70 Q10,50 30,30 Z" />
+            <circle cx="40" cy="40" r="3" fill="#ffffff" />
+            <circle cx="60" cy="40" r="3" fill="#ffffff" />
+            <circle cx="50" cy="60" r="3" fill="#ffffff" />
+            <line x1="40" y1="40" x2="60" y2="40" stroke="#ffffff" stroke-width="2" />
+            <line x1="50" y1="60" x2="60" y2="40" stroke="#ffffff" stroke-width="2" />
+            <line x1="50" y1="60" x2="40" y2="40" stroke="#ffffff" stroke-width="2" />
+        </svg>
+    </div>
+
+    <!-- Login Screen -->
+    <div id="login-screen" class="auth-container flex items-center justify-center min-h-screen px-4 py-12">
+        <div class="auth-card w-full max-w-md p-8 md:p-10">
+            <!-- Logo -->
+            <div class="flex justify-center mb-6">
+                <div class="flex items-center">
+                    <svg class="w-10 h-10 text-emerald-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 4.75L19.25 9L12 13.25L4.75 9L12 4.75Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path d="M4.75 14L12 18.25L19.25 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    <h1 class="text-2xl font-bold ml-2 text-gray-800">BibliotecAI</h1>
+                </div>
+            </div>
+            
+            <!-- Welcome Text -->
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Bem-vindo ao BibliotecAI</h2>
+                <p class="text-gray-600">Faça login e transforme sua experiência de leitura</p>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="login-form">
+                <!-- Profile Selection -->
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-medium mb-3">Selecione seu perfil</label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div id="student-option" class="profile-option active flex flex-col items-center p-4 rounded-lg border-2 border-emerald-600">
+                            <svg class="w-8 h-8 mb-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M6 21V19C6 17.9391 6.42143 16.9217 7.17157 16.1716C7.92172 15.4214 8.93913 15 10 15H14C15.0609 15 16.0783 15.4214 16.8284 16.1716C17.5786 16.9217 18 17.9391 18 19V21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="font-medium">Aluno</span>
+                        </div>
+                        <div id="management-option" class="profile-option flex flex-col items-center p-4 rounded-lg border-2 border-gray-200">
+                            <svg class="w-8 h-8 mb-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 11L12 14L22 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M21 12V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="font-medium">Gestão</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Email/Registration Field -->
+                <div class="mb-5">
+                    <label for="email" class="block text-gray-700 font-medium mb-2">E-mail ou Matrícula</label>
+                    <input 
+                        type="text" 
+                        id="email" 
+                        class="input-field w-full px-4 py-3 text-gray-700" 
+                        placeholder="Digite seu e-mail ou matrícula"
+                        required
+                        aria-required="true"
+                    >
+                </div>
+                
+                <!-- Password Field -->
+                <div class="mb-6">
+                    <div class="flex justify-between mb-2">
+                        <label for="password" class="block text-gray-700 font-medium">Senha</label>
+                    </div>
+                    <div class="relative">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            class="input-field w-full px-4 py-3 text-gray-700" 
+                            placeholder="Digite sua senha"
+                            required
+                            aria-required="true"
+                        >
+                        <button 
+                            type="button" 
+                            id="toggle-password" 
+                            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                            aria-label="Mostrar senha"
+                        >
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Login Button -->
+                <button 
+                    type="submit" 
+                    class="primary-btn w-full py-3 rounded-lg font-semibold text-lg mb-5 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50"
+                >
+                    Entrar
+                </button>
+                
+                <!-- Forgot Password and Register -->
+                <div class="flex justify-between items-center">
+                    <a href="#" id="forgot-password-link" class="link-text text-sm font-medium">Esqueceu a senha?</a>
+                    <a href="#" id="register-link" class="link-text text-sm font-medium">Criar uma conta</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Screen -->
+    <div id="register-screen" class="auth-container flex items-center justify-center min-h-screen px-4 py-12" style="display: none;">
+        <div class="auth-card w-full max-w-md p-8 md:p-10">
+            <!-- Logo -->
+            <div class="flex justify-center mb-6">
+                <div class="flex items-center">
+                    <svg class="w-10 h-10 text-emerald-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 4.75L19.25 9L12 13.25L4.75 9L12 4.75Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path d="M4.75 14L12 18.25L19.25 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    <h1 class="text-2xl font-bold ml-2 text-gray-800">BibliotecAI</h1>
+                </div>
+            </div>
+            
+            <!-- Register Text -->
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Crie sua conta</h2>
+                <p class="text-gray-600">Junte-se à comunidade BibliotecAI</p>
+            </div>
+            
+            <!-- Register Form -->
+            <form id="register-form">
+                <!-- Profile Selection -->
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-medium mb-3">Selecione seu perfil</label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div id="register-student-option" class="profile-option active flex flex-col items-center p-4 rounded-lg border-2 border-emerald-600">
+                            <svg class="w-8 h-8 mb-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M6 21V19C6 17.9391 6.42143 16.9217 7.17157 16.1716C7.92172 15.4214 8.93913 15 10 15H14C15.0609 15 16.0783 15.4214 16.8284 16.1716C17.5786 16.9217 18 17.9391 18 19V21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="font-medium">Aluno</span>
+                        </div>
+                        <div id="register-management-option" class="profile-option flex flex-col items-center p-4 rounded-lg border-2 border-gray-200">
+                            <svg class="w-8 h-8 mb-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 11L12 14L22 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M21 12V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="font-medium">Gestão</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Full Name Field -->
+                <div class="mb-5">
+                    <label for="fullname" class="block text-gray-700 font-medium mb-2">Nome Completo</label>
+                    <input 
+                        type="text" 
+                        id="fullname" 
+                        class="input-field w-full px-4 py-3 text-gray-700" 
+                        placeholder="Digite seu nome completo"
+                        required
+                        aria-required="true"
+                    >
+                </div>
+                
+                <!-- Email Field -->
+                <div class="mb-5">
+                    <label for="register-email" class="block text-gray-700 font-medium mb-2">E-mail</label>
+                    <input 
+                        type="email" 
+                        id="register-email" 
+                        class="input-field w-full px-4 py-3 text-gray-700" 
+                        placeholder="Digite seu e-mail"
+                        required
+                        aria-required="true"
+                    >
+                </div>
+                
+                <!-- Registration Number Field (conditional) -->
+                <div id="registration-field" class="mb-5">
+                    <label for="registration" class="block text-gray-700 font-medium mb-2">Matrícula</label>
+                    <input 
+                        type="text" 
+                        id="registration" 
+                        class="input-field w-full px-4 py-3 text-gray-700" 
+                        placeholder="Digite sua matrícula escolar"
+                    >
+                </div>
+                
+                <!-- Password Field -->
+                <div class="mb-5">
+                    <label for="register-password" class="block text-gray-700 font-medium mb-2">Senha</label>
+                    <div class="relative">
+                        <input 
+                            type="password" 
+                            id="register-password" 
+                            class="input-field w-full px-4 py-3 text-gray-700" 
+                            placeholder="Crie uma senha"
+                            required
+                            aria-required="true"
+                        >
+                        <button 
+                            type="button" 
+                            id="toggle-register-password" 
+                            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                            aria-label="Mostrar senha"
+                        >
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">A senha deve ter pelo menos 8 caracteres</p>
+                </div>
+                
+                <!-- Confirm Password Field -->
+                <div class="mb-6">
+                    <label for="confirm-password" class="block text-gray-700 font-medium mb-2">Confirmar Senha</label>
+                    <div class="relative">
+                        <input 
+                            type="password" 
+                            id="confirm-password" 
+                            class="input-field w-full px-4 py-3 text-gray-700" 
+                            placeholder="Confirme sua senha"
+                            required
+                            aria-required="true"
+                        >
+                    </div>
+                </div>
+                
+                <!-- Terms and Conditions -->
+                <div class="mb-6">
+                    <label class="flex items-center">
+                        <input type="checkbox" id="terms" class="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500" required>
+                        <span class="ml-2 text-sm text-gray-600">
+                            Eu concordo com os <a href="#" class="link-text">Termos de Uso</a> e <a href="#" class="link-text">Política de Privacidade</a>
+                        </span>
+                    </label>
+                </div>
+                
+                <!-- Register Button -->
+                <button 
+                    type="submit" 
+                    class="primary-btn w-full py-3 rounded-lg font-semibold text-lg mb-5 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50"
+                >
+                    Criar Conta
+                </button>
+                
+                <!-- Back to Login -->
+                <div class="text-center">
+                    <p class="text-sm text-gray-600">
+                        Já tem uma conta? <a href="#" id="back-to-login" class="link-text font-medium">Faça login</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Student Dashboard -->
+    <div id="student-dashboard" class="dashboard-container min-h-screen bg-gray-50">
+        <div class="flex min-h-screen">
+            <!-- Sidebar -->
+            <div class="sidebar fixed h-full w-64 text-white py-8 px-4 flex flex-col z-50">
+                <div class="mb-12 flex items-center justify-center">
+                    <div class="flex items-center">
+                        <svg class="w-8 h-8 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 4.75L19.25 9L12 13.25L4.75 9L12 4.75Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M4.75 14L12 18.25L19.25 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                        <h1 class="text-2xl font-bold">BibliotecAI</h1>
+                    </div>
+                </div>
+                
+                <nav class="flex-1">
+                    <ul class="space-y-1">
+                        <li>
+                            <a href="#" class="sidebar-item active flex items-center py-3 px-4 text-white">
+                                <span class="text-xl mr-3">🏠</span>
+                                <span class="sidebar-text font-medium">Início</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="sidebar-item flex items-center py-3 px-4 text-white">
+                                <span class="text-xl mr-3">📍</span>
+                                <span class="sidebar-text font-medium">Minha Trilha</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="sidebar-item flex items-center py-3 px-4 text-white">
+                                <span class="text-xl mr-3">💡</span>
+                                <span class="sidebar-text font-medium">Recomendações</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="sidebar-item flex items-center py-3 px-4 text-white">
+                                <span class="text-xl mr-3">🎨</span>
+                                <span class="sidebar-text font-medium">Desenhos e Ilustrações</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="sidebar-item flex items-center py-3 px-4 text-white">
+                                <span class="text-xl mr-3">📚</span>
+                                <span class="sidebar-text font-medium">Minhas Leituras</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <div class="mt-auto px-4 py-6">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center text-white font-medium">
+                            M
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-white">Maria Silva</p>
+                            <p class="text-xs text-emerald-200">Estudante</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="flex-1 ml-64 flex flex-col">
+                <!-- Header -->
+                <header class="bg-white py-4 px-6 shadow-sm sticky top-0 z-40">
+                    <div class="container mx-auto">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h2 class="text-xl font-semibold text-gray-800">Bem-vinda, Maria!</h2>
+                                <p class="text-sm text-gray-500" id="current-date">Carregando data...</p>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="relative">
+                                    <input type="text" placeholder="Pesquisar..." class="search-input pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent w-64">
+                                    <svg class="absolute left-3 top-2.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <button id="logout-btn" class="py-2 px-4 bg-emerald-50 text-emerald-700 rounded-lg hover:bg-emerald-100 transition-colors">
+                                    Sair
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Main Content Area -->
+                <main class="flex-1 py-8 px-6">
+                    <div class="container mx-auto">
+                        <!-- Welcome Banner -->
+                        <div class="bg-gradient-to-r from-emerald-600 to-emerald-700 rounded-xl p-6 mb-8 text-white">
+                            <h1 class="text-3xl font-bold mb-2">Painel do Aluno</h1>
+                            <p class="text-emerald-100">Você fez login com sucesso como aluno! Esta é a sua área personalizada.</p>
+                        </div>
+                        
+                        <!-- Dashboard Content -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Card 1 -->
+                            <div class="card bg-white p-6 shadow-card">
+                                <h3 class="font-semibold text-lg mb-4 text-gray-800">Livros Recomendados</h3>
+                                <div class="space-y-4">
+                                    <div class="flex items-center">
+                                        <div class="w-12 h-12 rounded bg-emerald-100 flex items-center justify-center text-emerald-600 text-xl">
+                                            📚
+                                        </div>
+                                        <div class="ml-4">
+                                            <h4 class="font-medium">O Pequeno Príncipe</h4>
+                                            <p class="text-sm text-gray-500">Antoine de Saint-Exupéry</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="w-12 h-12 rounded bg-emerald-100 flex items-center justify-center text-emerald-600 text-xl">
+                                            📚
+                                        </div>
+                                        <div class="ml-4">
+                                            <h4 class="font-medium">A Revolução dos Bichos</h4>
+                                            <p class="text-sm text-gray-500">George Orwell</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Card 2 -->
+                            <div class="card bg-white p-6 shadow-card">
+                                <h3 class="font-semibold text-lg mb-4 text-gray-800">Progresso de Leitura</h3>
+                                <div class="space-y-4">
+                                    <div>
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-sm text-gray-600">Dom Casmurro</span>
+                                            <span class="text-sm text-gray-600 font-medium">75%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress" style="width: 75%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-sm text-gray-600">O Hobbit</span>
+                                            <span class="text-sm text-gray-600 font-medium">30%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress" style="width: 30%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Card 3 -->
+                            <div class="card bg-white p-6 shadow-card">
+                                <h3 class="font-semibold text-lg mb-4 text-gray-800">Próximos Eventos</h3>
+                                <div class="space-y-4">
+                                    <div class="border-l-4 border-emerald-500 pl-4 py-1">
+                                        <h4 class="font-medium">Clube do Livro</h4>
+                                        <p class="text-sm text-gray-500">15/06/2023 - 15:00</p>
+                                    </div>
+                                    <div class="border-l-4 border-emerald-500 pl-4 py-1">
+                                        <h4 class="font-medium">Oficina de Ilustração</h4>
+                                        <p class="text-sm text-gray-500">20/06/2023 - 14:30</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <!-- Management Dashboard -->
+    <div id="management-dashboard" class="dashboard-container min-h-screen bg-gray-50">
+        <div class="flex min-h-screen">
+            <!-- Sidebar -->
+            <div class="sidebar fixed h-full w-64 text-white py-8 px-4 flex flex-col z-50">
+                <div class="mb-12 flex items-center justify-center">
+                    <div class="flex items-center">
+                        <svg class="w-8 h-8 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 4.75L19.25 9L12 13.25L4.75 9L12 4.75Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M4.75 14L12 18.25L19.25 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                        <h1 class="text-2xl font-bold">BibliotecAI</h1>
+                    </div>
+                </div>
+                
+                <nav class="flex-1">
+                    <ul class="space-y-1">
+                        <li>
+                            <a href="#" class="sidebar-item active flex items-center py-3 px-4 text-white">
+                                <span class="text-xl mr-3">🏠</span>
+                                <span class="sidebar-text font-medium">Painel</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="sidebar-item flex items-center py-3 px-4 text-white">
+                                <span class="text-xl mr-3">👥</span>
+                                <span class="sidebar-text font-medium">Alunos</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="sidebar-item flex items-center py-3 px-4 text-white">
+                                <span class="text-xl mr-3">📚</span>
+                                <span class="sidebar-text font-medium">Acervo</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="sidebar-item flex items-center py-3 px-4 text-white">
+                                <span class="text-xl mr-3">📊</span>
+                                <span class="sidebar-text font-medium">Relatórios</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="sidebar-item flex items-center py-3 px-4 text-white">
+                                <span class="text-xl mr-3">⚙️</span>
+                                <span class="sidebar-text font-medium">Configurações</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <div class="mt-auto px-4 py-6">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center text-white font-medium">
+                            A
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-white">Ana Oliveira</p>
+                            <p class="text-xs text-emerald-200">Bibliotecária</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="flex-1 ml-64 flex flex-col">
+                <!-- Header -->
+                <header class="bg-white py-4 px-6 shadow-sm sticky top-0 z-40">
+                    <div class="container mx-auto">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h2 class="text-xl font-semibold text-gray-800">Bem-vinda, Ana!</h2>
+                                <p class="text-sm text-gray-500" id="management-current-date">Carregando data...</p>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="relative">
+                                    <input type="text" placeholder="Pesquisar..." class="search-input pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent w-64">
+                                    <svg class="absolute left-3 top-2.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <button id="management-logout-btn" class="py-2 px-4 bg-emerald-50 text-emerald-700 rounded-lg hover:bg-emerald-100 transition-colors">
+                                    Sair
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Main Content Area -->
+                <main class="flex-1 py-8 px-6">
+                    <div class="container mx-auto">
+                        <!-- Welcome Banner -->
+                        <div class="bg-gradient-to-r from-emerald-600 to-emerald-700 rounded-xl p-6 mb-8 text-white">
+                            <h1 class="text-3xl font-bold mb-2">Painel de Gestão</h1>
+                            <p class="text-emerald-100">Você fez login com sucesso como gestor! Esta é a sua área administrativa.</p>
+                        </div>
+                        
+                        <!-- Dashboard Content -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                            <!-- Stat Card 1 -->
+                            <div class="card bg-white p-6 shadow-card">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="font-semibold text-gray-500">Total de Alunos</h3>
+                                    <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="flex items-end justify-between">
+                                    <div>
+                                        <p class="text-3xl font-bold text-gray-800">1,248</p>
+                                        <p class="text-sm text-green-500 flex items-center">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                                            </svg>
+                                            +3.2% este mês
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Stat Card 2 -->
+                            <div class="card bg-white p-6 shadow-card">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="font-semibold text-gray-500">Livros no Acervo</h3>
+                                    <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="flex items-end justify-between">
+                                    <div>
+                                        <p class="text-3xl font-bold text-gray-800">5,672</p>
+                                        <p class="text-sm text-green-500 flex items-center">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                                            </svg>
+                                            +12 novos livros
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Stat Card 3 -->
+                            <div class="card bg-white p-6 shadow-card">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="font-semibold text-gray-500">Empréstimos Ativos</h3>
+                                    <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="flex items-end justify-between">
+                                    <div>
+                                        <p class="text-3xl font-bold text-gray-800">328</p>
+                                        <p class="text-sm text-yellow-500 flex items-center">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                                            </svg>
+                                            Estável
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Stat Card 4 -->
+                            <div class="card bg-white p-6 shadow-card">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="font-semibold text-gray-500">Eventos Agendados</h3>
+                                    <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="flex items-end justify-between">
+                                    <div>
+                                        <p class="text-3xl font-bold text-gray-800">12</p>
+                                        <p class="text-sm text-green-500 flex items-center">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                                            </svg>
+                                            +2 este mês
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Recent Activity -->
+                        <div class="card bg-white p-6 shadow-card mb-8">
+                            <h3 class="font-semibold text-lg mb-4 text-gray-800">Atividade Recente</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center pb-4 border-b border-gray-100">
+                                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-4">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">Novo livro adicionado: "A Culpa é das Estrelas"</p>
+                                        <p class="text-sm text-gray-500">Hoje, 10:30</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center pb-4 border-b border-gray-100">
+                                    <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 mr-4">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">Empréstimo aprovado para Maria Silva</p>
+                                        <p class="text-sm text-gray-500">Hoje, 09:15</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center pb-4 border-b border-gray-100">
+                                    <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 mr-4">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">Lembrete: 5 livros com devolução atrasada</p>
+                                        <p class="text-sm text-gray-500">Ontem, 16:40</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 mr-4">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">Novo evento criado: "Clube do Livro"</p>
+                                        <p class="text-sm text-gray-500">Ontem, 14:20</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Success Modal -->
+    <div id="registration-success" class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50" style="display: none;">
+        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+            <div class="text-center">
+                <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-6">
+                    <svg class="h-10 w-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Cadastro realizado com sucesso!</h3>
+                <p class="text-gray-600 mb-6">Sua conta foi criada. Agora você pode fazer login e aproveitar todos os recursos do BibliotecAI.</p>
+                <button id="go-to-login" class="primary-btn w-full py-3 rounded-lg font-semibold">
+                    Fazer Login
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Format current date
+        function formatCurrentDate() {
+            const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+            const today = new Date();
+            return today.toLocaleDateString('pt-BR', options);
+        }
+        
+        document.getElementById('current-date').textContent = formatCurrentDate();
+        document.getElementById('management-current-date').textContent = formatCurrentDate();
+
+        // Toggle between profile options in login screen
+        document.getElementById('student-option').addEventListener('click', function() {
+            this.classList.add('active');
+            this.style.borderColor = '#047857';
+            document.getElementById('management-option').classList.remove('active');
+            document.getElementById('management-option').style.borderColor = '#e5e7eb';
+        });
+
+        document.getElementById('management-option').addEventListener('click', function() {
+            this.classList.add('active');
+            this.style.borderColor = '#047857';
+            document.getElementById('student-option').classList.remove('active');
+            document.getElementById('student-option').style.borderColor = '#e5e7eb';
+        });
+
+        // Toggle between profile options in register screen
+        document.getElementById('register-student-option').addEventListener('click', function() {
+            this.classList.add('active');
+            this.style.borderColor = '#047857';
+            document.getElementById('register-management-option').classList.remove('active');
+            document.getElementById('register-management-option').style.borderColor = '#e5e7eb';
+            document.getElementById('registration-field').style.display = 'block';
+        });
+
+        document.getElementById('register-management-option').addEventListener('click', function() {
+            this.classList.add('active');
+            this.style.borderColor = '#047857';
+            document.getElementById('register-student-option').classList.remove('active');
+            document.getElementById('register-student-option').style.borderColor = '#e5e7eb';
+            document.getElementById('registration-field').style.display = 'block';
+        });
+
+        // Toggle password visibility in login form
+        document.getElementById('toggle-password').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const icon = this.querySelector('svg');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                this.setAttribute('aria-label', 'Esconder senha');
+                icon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>
+                `;
+            } else {
+                passwordInput.type = 'password';
+                this.setAttribute('aria-label', 'Mostrar senha');
+                icon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                `;
+            }
+        });
+
+        // Toggle password visibility in register form
+        document.getElementById('toggle-register-password').addEventListener('click', function() {
+            const passwordInput = document.getElementById('register-password');
+            const icon = this.querySelector('svg');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                this.setAttribute('aria-label', 'Esconder senha');
+                icon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>
+                `;
+            } else {
+                passwordInput.type = 'password';
+                this.setAttribute('aria-label', 'Mostrar senha');
+                icon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                `;
+            }
+        });
+
+        // Switch to register screen
+        document.getElementById('register-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('register-screen').style.display = 'flex';
+            document.getElementById('register-screen').classList.add('slide-in');
+        });
+
+        // Switch back to login screen
+        document.getElementById('back-to-login').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('register-screen').style.display = 'none';
+            document.getElementById('login-screen').style.display = 'flex';
+            document.getElementById('login-screen').classList.add('slide-in');
+        });
+
+        // Login form submission
+      document.getElementById('login-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const email = document.getElementById('email').value.trim().toLowerCase();
+        const senha = document.getElementById('password').value;
+        const isStudent = document.getElementById('student-option').classList.contains('active');
+        const perfil = isStudent ? 'aluno' : 'gestao';
+
+        let usuarios = JSON.parse(localStorage.getItem('usuarios')) || {};
+
+        if (usuarios[email]) {
+            if (usuarios[email].senha !== senha) {
+            alert('Senha incorreta!');
+            return;
+            }
+        } else {
+            usuarios[email] = { senha, perfil };
+            localStorage.setItem('usuarios', JSON.stringify(usuarios));
+            alert('Conta criada com sucesso!');
+        }
+
+        localStorage.setItem('usuarioLogado', JSON.stringify({ email, perfil }));
+
+        // Redirecionar
+        if (perfil === 'aluno') {
+            window.location.href = 'teste1.html';
+        } else {
+            window.location.href = 'gestao.html';
+        }
+        });
+
+        // Register form submission
+        document.getElementById('register-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const fullname = document.getElementById('fullname').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const termsAccepted = document.getElementById('terms').checked;
+            
+            // Validate form
+            if (!fullname || !email || !password || !confirmPassword) {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
+            
+            if (password.length < 8) {
+                alert('A senha deve ter pelo menos 8 caracteres.');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                alert('As senhas não coincidem.');
+                return;
+            }
+            
+            if (!termsAccepted) {
+                alert('Você precisa aceitar os termos de uso e política de privacidade.');
+                return;
+            }
+            
+            // Show loading state
+            const registerButton = document.querySelector('#register-form .primary-btn');
+            const originalText = registerButton.textContent;
+            registerButton.textContent = 'Criando conta...';
+            registerButton.disabled = true;
+            
+            // Simulate API delay
+            setTimeout(() => {
+                // Hide register screen
+                document.getElementById('register-screen').style.display = 'none';
+                
+                // Show success modal
+                document.getElementById('registration-success').style.display = 'flex';
+                
+                // Reset button state
+                registerButton.textContent = originalText;
+                registerButton.disabled = false;
+                
+                // Reset form
+                document.getElementById('register-form').reset();
+            }, 1500);
+        });
+
+        // Go to login after successful registration
+        document.getElementById('go-to-login').addEventListener('click', function() {
+            document.getElementById('registration-success').style.display = 'none';
+            document.getElementById('login-screen').style.display = 'flex';
+        });
+
+        // Logout functionality
+        document.getElementById('logout-btn').addEventListener('click', function() {
+            document.getElementById('student-dashboard').style.display = 'none';
+            document.getElementById('login-screen').style.display = 'flex';
+            
+            // Reset form
+            document.getElementById('login-form').reset();
+        });
+
+        document.getElementById('management-logout-btn').addEventListener('click', function() {
+            document.getElementById('management-dashboard').style.display = 'none';
+            document.getElementById('login-screen').style.display = 'flex';
+            
+            // Reset form
+            document.getElementById('login-form').reset();
+        });
+
+        // Forgot password link
+        document.getElementById('forgot-password-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Funcionalidade de recuperação de senha será implementada em breve!');
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9528114122a76b1b',t:'MTc1MDM4ODk2Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
