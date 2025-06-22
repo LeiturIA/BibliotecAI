@@ -104,13 +104,13 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center p-3 rounded-lg hover:bg-green-600 transition-all">
+                    <a href="teste_recomedacao.html" class="flex items-center p-3 rounded-lg hover:bg-green-600 transition-all">
                         <i class="fas fa-lightbulb text-xl w-8"></i>
                         <span class="sidebar-text">Recomendações</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center p-3 rounded-lg hover:bg-green-600 transition-all">
+                    <a href="desenhos.html" class="flex items-center p-3 rounded-lg hover:bg-green-600 transition-all">
                         <i class="fas fa-paint-brush text-xl w-8"></i>
                         <span class="sidebar-text">Desenhos e Ilustrações</span>
                     </a>
@@ -124,8 +124,14 @@
                 <li>
                     <a href="#" class="flex items-center p-3 rounded-lg hover:bg-green-600 transition-all">
                         <i class="fas fa-cog text-xl w-8"></i>
-                        <span class="sidebar-text">Gestão</span>
+                        <span class="sidebar-text">Configuração</span>
                     </a>
+                </li>
+                <li>
+                    <button onclick="logout()" class="flex items-center p-3 rounded-lg hover:bg-green-600 transition-all">
+                        <i class="fas fa-sign-out-alt text-xl w-8"></i>
+                        <span class="sidebar-text">Sair</span>
+                    </button>
                 </li>
             </ul>
         </nav>
@@ -509,5 +515,12 @@
             });
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'94a36d64e283a519',t:'MTc0ODk5ODEzNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+    <script>
+            function logout() {
+                    localStorage.removeItem('perfil'); // Remove o perfil salvo
+                    localStorage.removeItem('usuario'); // Remove o nome salvo (opcional)
+                    window.location.href = 'login2.html'; // Redireciona para a tela de login
+                        }
+    </script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'94a36d64e283a519',t:'MTc0ODk5ODEzNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
